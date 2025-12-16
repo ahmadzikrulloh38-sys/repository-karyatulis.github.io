@@ -5,7 +5,7 @@
 <title>Upload Karya Tulis | Repository Karya Tulis</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Proteksi Login -->
+<!-- 🔐 Proteksi Login -->
 <script>
 if (localStorage.getItem("login") !== "true") {
   window.location.href = "index.html";
@@ -107,7 +107,7 @@ header {
 
 <header>
   <strong>Repository Karya Tulis</strong>
-  <div>Login sebagai: <b>zikru</b></div>
+  <div>Login sebagai: <b id="namaUser"></b></div>
 </header>
 
 <div class="container">
@@ -115,11 +115,9 @@ header {
   <!-- SIDEBAR -->
   <nav class="sidebar">
     <a href="dashboard.html">Dashboard</a>
-    <a href="#">Data Karya Tulis</a>
+    <a href="data-karyatulis.html">Data Karya Tulis</a>
     <a href="upload-karyatulis.html" class="active">Upload Karya Tulis</a>
-    <a href="#">Reviewer</a>
-    <a href="#">Pengaturan</a>
-    <a href="#" onclick="logout()">Logout</a>
+    <a href="index.html" onclick="logout()">Logout</a>
   </nav>
 
   <!-- CONTENT -->
@@ -129,10 +127,10 @@ header {
       <h2>Upload Karya Tulis</h2>
       <p>
         Untuk keamanan dan kemudahan unggah file PDF,  
-        proses upload Karya Tulis dilakukan melalui Google Form.
+        proses upload karya tulis dilakukan melalui Google Form.
       </p>
 
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSci6Bqz_i2tTBb3pC-ds87UzX-j5snHVG5f0oFf9tIEFw-Daw/viewform?usp=dialog"
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSci6Bqz_i2tTBb3pC-ds87UzX-j5snHVG5f0oFf9tIEFw-Daw/viewform"
          target="_blank">
         Buka Form Upload Karya Tulis
       </a>
@@ -146,10 +144,14 @@ header {
 </div>
 
 <script>
-function logout() {
-  localStorage.removeItem("login");
-  window.location.href = "index.html";
-}
+  // Tampilkan nama user
+  document.getElementById("namaUser").innerText =
+    localStorage.getItem("nama") || "User";
+
+  // Logout
+  function logout() {
+    localStorage.clear();
+  }
 </script>
 
 </body>
