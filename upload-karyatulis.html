@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Upload Karya Tulis | Repository Karya Tulis</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Proteksi Login -->
+<script>
+if (localStorage.getItem("login") !== "true") {
+  window.location.href = "index.html";
+}
+</script>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f4f6f9;
+}
+
+/* HEADER */
+header {
+  background: #2c5364;
+  color: white;
+  padding: 15px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* LAYOUT */
+.container {
+  display: flex;
+  min-height: calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #203a43;
+}
+
+.sidebar a {
+  display: block;
+  padding: 14px 22px;
+  color: #ddd;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background: #2c5364;
+  color: white;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 30px;
+}
+
+/* UPLOAD CARD */
+.upload-card {
+  max-width: 420px;
+  background: white;
+  margin: 60px auto;
+  padding: 35px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+}
+
+.upload-card h2 {
+  margin-top: 0;
+  color: #2c5364;
+}
+
+.upload-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+.upload-card a {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 26px;
+  background: #2c5364;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 15px;
+}
+
+.upload-card a:hover {
+  background: #203a43;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <strong>Repository Karya Tulis</strong>
+  <div>Login sebagai: <b>zikru</b></div>
+</header>
+
+<div class="container">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="#">Data Karya Tulis</a>
+    <a href="upload-karyatulis.html" class="active">Upload Karya Tulis</a>
+    <a href="#">Reviewer</a>
+    <a href="#">Pengaturan</a>
+    <a href="#" onclick="logout()">Logout</a>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="content">
+
+    <div class="upload-card">
+      <h2>Upload Karya Tulis</h2>
+      <p>
+        Untuk keamanan dan kemudahan unggah file PDF,  
+        proses upload Karya Tulis dilakukan melalui Google Form.
+      </p>
+
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSci6Bqz_i2tTBb3pC-ds87UzX-j5snHVG5f0oFf9tIEFw-Daw/viewform?usp=dialog"
+         target="_blank">
+        Buka Form Upload Karya Tulis
+      </a>
+
+      <p style="font-size:12px;margin-top:15px;color:#777">
+        Setelah submit, silakan kembali ke Dashboard
+      </p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function logout() {
+  localStorage.removeItem("login");
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
