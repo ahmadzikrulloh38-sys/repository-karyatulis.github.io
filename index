@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Repository Jurnal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-container {
+      background: #ffffff;
+      width: 380px;
+      padding: 35px;
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2c5364;
+      margin-bottom: 8px;
+    }
+
+    p {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #2c5364;
+      box-shadow: 0 0 5px rgba(44,83,100,0.3);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #2c5364;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-login:hover {
+      background: #203a43;
+    }
+
+    #result {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .footer-text {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="login-container">
+  <h2>Repository Jurnal</h2>
+  <p>Silakan login untuk mengakses koleksi ilmiah</p>
+
+  <div class="form-group">
+    <label>Username</label>
+    <input type="text" id="username" placeholder="Masukkan username">
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Masukkan password">
+  </div>
+
+  <button class="btn-login" onclick="login()">Login</button>
+
+  <p id="result"></p>
+
+  <div class="footer-text">
+    © 2025 Repository Jurnal | SMK / Institusi Pendidikan
+  </div>
+</div>
+
+<script>
+function login() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const result = document.getElementById("result");
+
+  if (!username || !password) {
+    result.style.color = "red";
+    result.innerText = "Username dan password wajib diisi.";
+    return;
+  }
+
+  result.style.color = "#333";
+  result.innerText = "Memverifikasi login...";
+
+  // Kirim data dengan format PALING KOMPATIBEL
+  const formData = new URLSearchParams();
+  formData.append("username", username);
+  formData.append("password", password);
+
+  fetch("https://script.google.com/macros/s/AKfycbyKmbE2LjRWsS2MEtzp9K3zCfhVpsbZyUr94G5ltLTXVirK8sFjsitqBBpKcjoteLyvQg/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(text => {
+    const data = JSON.parse(text);
+
+    if (data.status === "success") {
+  localStorage.setItem("login", "true");
+  localStorage.setItem("nama", data.nama);
+  window.location.href = "dashboard.html";
+}else {
+      result.style.color = "red";
+      result.innerText = "Login gagal! Username atau password salah.";
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    result.style.color = "red";
+    result.innerText = "Gagal terhubung ke server.";
+  });
+}
+</script>
+
+</body>
+</html>
