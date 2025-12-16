@@ -9,7 +9,6 @@
  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
 <style>
-/* Reset dan font */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -20,13 +19,20 @@ body {
 header {
   background: linear-gradient(to right, #2c5364, #203a43);
   color: white;
-  padding: 15px 25px;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
   font-weight: 600;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Hamburger for mobile */
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
 }
 
 /* Layout container */
@@ -41,6 +47,7 @@ header {
   background: #203a43;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
 .sidebar a {
@@ -100,7 +107,7 @@ thead {
 }
 
 th, td {
-  padding: 14px 16px;
+  padding: 12px 10px;
   text-align: left;
   font-size: 14px;
 }
@@ -130,13 +137,24 @@ td:last-child {
   text-align: center;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .sidebar {
-    width: 60px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: calc(100vh - 60px);
+    transform: translateX(-100%);
+    z-index: 1000;
   }
-  .sidebar a {
-    padding: 12px;
-    font-size: 12px;
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .container {
+    flex-direction: column;
   }
   .content {
     padding: 15px;
@@ -149,12 +167,14 @@ td:last-child {
 
 <header>
   <strong>Repository Karya Tulis</strong>
-  <div>Data Karya Tulis</div>
+  <div>
+    <i class="fa-solid fa-bars menu-toggle" onclick="toggleSidebar()"></i>
+  </div>
 </header>
 
 <div class="container">
 
-<nav class="sidebar">
+<nav class="sidebar" id="sidebar">
   <a href="dashboard.html">Dashboard</a>
   <a href="data-karyatulis.html" class="active">Data Karya Tulis</a>
   <a href="upload-karyatulis.html">Upload Karya Tulis</a>
@@ -223,7 +243,7 @@ function renderTable(data) {
         <td>${row.nama}</td>
         <td>${row.jurusan}</td>
         <td>${row.tahun}</td>
-        <td>
+        <td style="text-align:center">
           <a href="${link}" target="_blank" title="Download">
             <i class="fa-solid fa-download"></i>
           </a>
@@ -260,7 +280,7 @@ function populateFilters(data) {
   });
 }
 
-// Event listener filter
+// Filter event
 document.getElementById("filterJurusan").addEventListener("change", applyFilter);
 document.getElementById("filterTahun").addEventListener("change", applyFilter);
 
@@ -276,7 +296,12 @@ function applyFilter() {
   renderTable(filtered);
 }
 
-// Ambil data dari Google Apps Script
+// Sidebar toggle for mobile
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+// Fetch data
 fetch("https://script.google.com/macros/s/AKfycbwhQOV4axjkdQF4tJAFpvzQ4kUpLNoHEIYR2b5pXy8WJsTHGK8jOlRkQcACpBmxylTY/exec")
   .then(res => res.json())
   .then(data => {
