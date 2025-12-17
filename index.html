@@ -9,10 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
     body {
       margin: 0;
@@ -29,29 +26,36 @@
       padding: 35px;
       border-radius: 14px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+
+    /* Logo */
+    .logo {
+      width: 60px;       /* ukuran default */
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
+
+    /* Responsif untuk layar kecil */
+    @media (max-width: 400px) {
+      .logo {
+        width: 40px;
+        height: 40px;
+        margin-bottom: 10px;
+      }
     }
 
     h2 {
-      text-align: center;
       color: #2c5364;
       margin-bottom: 8px;
     }
 
-    p {
-      text-align: center;
-      font-size: 14px;
-      color: #666;
-      margin-bottom: 25px;
-    }
+    p { font-size: 14px; color: #666; margin-bottom: 25px; }
 
-    .form-group {
-      margin-bottom: 18px;
-    }
+    .form-group { margin-bottom: 18px; text-align: left; }
 
-    label {
-      font-size: 13px;
-      color: #333;
-    }
+    label { font-size: 13px; color: #333; }
 
     input {
       width: 100%;
@@ -80,31 +84,21 @@
       transition: 0.3s;
     }
 
-    .btn-login:hover {
-      background: #203a43;
-    }
+    .btn-login:hover { background: #203a43; }
 
-    #result {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 14px;
-    }
+    #result { margin-top: 15px; font-size: 14px; color: red; }
 
-    .footer-text {
-      margin-top: 25px;
-      text-align: center;
-      font-size: 12px;
-      color: #888;
-    }
+    .footer-text { margin-top: 25px; font-size: 12px; color: #888; }
   </style>
 </head>
 
 <body>
 
 <div class="login-container">
-    <img src="logo_smk.jpg" alt="Logo SMKS 1 Barunawati" class="logo">
+  <!-- Logo -->
+  <img src="logo.png" alt="Logo SMKS 1 Barunawati" class="logo">
+
   <h2>Repository Karya Tulis</h2>
-  <h2>SMKS 1 BARUNAWATI</h2>
   <p>Silakan login untuk mengakses koleksi ilmiah</p>
 
   <div class="form-group">
@@ -141,7 +135,6 @@ function login() {
   result.style.color = "#333";
   result.innerText = "Memverifikasi login...";
 
-  // Kirim data dengan format PALING KOMPATIBEL
   const formData = new URLSearchParams();
   formData.append("username", username);
   formData.append("password", password);
@@ -153,12 +146,11 @@ function login() {
   .then(res => res.text())
   .then(text => {
     const data = JSON.parse(text);
-
     if (data.status === "success") {
-  localStorage.setItem("login", "true");
-  localStorage.setItem("nama", data.nama);
-  window.location.href = "dashboard.html";
-}else {
+      localStorage.setItem("login", "true");
+      localStorage.setItem("nama", data.nama);
+      window.location.href = "dashboard.html";
+    } else {
       result.style.color = "red";
       result.innerText = "Login gagal! Username atau password salah.";
     }
