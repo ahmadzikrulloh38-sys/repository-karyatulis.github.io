@@ -9,54 +9,63 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
+    /* Palet Modern */
+    :root {
+      --primary: #4B6CB7;   /* Biru Indigo */
+      --secondary: #FFFFFF; /* Putih */
+      --text: #2C2C2C;      /* Abu Gelap */
+      --accent: #00BFFF;    /* Biru Cerah */
+      --shadow: #E0E0E0;    /* Shadow lembut */
+    }
+
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin:0; padding:0; }
 
     html, body {
       height: 100%;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      background: linear-gradient(135deg, #4B6CB7, #182848);
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .login-container {
-      background: #ffffff;
+      background-color: var(--secondary);
       width: 360px;
       max-width: 90%;
       padding: 30px 25px;
-      border-radius: 14px;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       text-align: center;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
     }
 
-    /* Logo */
+    /* Logo bulat */
     .logo {
-      width: 100px;       /* ukuran lebih proporsional */
+      width: 100px;
       height: 100px;
-      object-fit: contain;
-      margin-bottom: 10px; /* jarak lebih rapat ke judul */
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      border: 3px solid var(--primary);
     }
 
     @media (max-width: 400px) {
-      .logo {
-        width: 60px;
-        height: 60px;
-      }
+      .logo { width: 70px; height: 70px; }
     }
 
     h2 {
-      color: #2c5364;
-      margin: 3px 0;  /* jarak rapat antar judul */
+      color: var(--primary);
+      margin: 3px 0;
       font-size: 18px;
+      font-weight: 600;
     }
 
     p {
       font-size: 13px;
-      color: #666;
+      color: var(--text);
       margin-bottom: 20px;
     }
 
@@ -66,36 +75,42 @@
       text-align: left;
     }
 
-    label { font-size: 13px; color: #333; }
+    label { font-size: 13px; color: var(--text); }
 
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-top: 5px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid #ccc;
       outline: none;
+      transition: all 0.3s;
     }
 
     input:focus {
-      border-color: #2c5364;
-      box-shadow: 0 0 5px rgba(44,83,100,0.3);
+      border-color: var(--primary);
+      box-shadow: 0 0 8px rgba(75,108,183,0.3);
     }
 
+    /* Tombol utama modern */
     .btn-login {
       width: 100%;
       padding: 12px;
       border: none;
-      border-radius: 8px;
-      background: #2c5364;
-      color: #fff;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      color: var(--secondary);
       font-size: 15px;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
-    .btn-login:hover { background: #203a43; }
+    .btn-login:hover {
+      background: var(--accent);
+      box-shadow: 0 6px 15px rgba(0,191,255,0.4);
+    }
 
     #result {
       margin-top: 10px;
@@ -109,6 +124,10 @@
       font-size: 12px;
       color: #888;
     }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--primary); text-decoration: underline; }
+
   </style>
 </head>
 
