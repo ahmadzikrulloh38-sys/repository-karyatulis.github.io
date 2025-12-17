@@ -139,7 +139,7 @@
     <a href="dashboard.html" class="active">Dashboard</a>
     <a href="data-karyatulis.html">Data Karya Tulis</a>
     <a href="upload-karyatulis.html">Upload Karya Tulis</a>
-    <a href="index.html" onclick="logout()">Logout</a>
+    <a href="#" onclick="logout()">Logout</a>
   </nav>
 
   <main class="content">
@@ -171,7 +171,6 @@ const userLogin = localStorage.getItem("login");
 const namaUser = localStorage.getItem("nama");
 
 if (!userLogin) {
-  // Jika belum login, redirect ke index.html
   window.location.href = "index.html";
 } else {
   document.getElementById("namaUser").textContent = namaUser;
@@ -217,7 +216,7 @@ async function fetchData() {
     sorted.slice(0,5).forEach(k => {
       const tr = document.createElement("tr");
       const badgeClass = k.status.toLowerCase() === "review" ? "review" : "published";
-      tr.innerHTML = `<td><a href="${k.link}" target="_blank">${k.judul}</a></td>
+      tr.innerHTML = `<td>${k.judul}</td>
                       <td>${k.penulis}</td>
                       <td>${k.tahun}</td>
                       <td><span class="badge ${badgeClass}">${k.status}</span></td>`;
