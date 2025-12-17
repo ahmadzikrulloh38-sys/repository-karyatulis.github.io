@@ -63,6 +63,23 @@ tbody tr:hover { background:#f0f4f7; }
 td a { color: var(--accent); font-size:18px; display:flex; justify-content:center; align-items:center; }
 td:last-child { text-align:center; }
 
+.pagination {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+.pagination button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  background: var(--primary);
+  color: var(--secondary);
+  cursor: pointer;
+}
+.pagination button.active { background: var(--accent); }
+.pagination button:disabled { background: #ccc; cursor: not-allowed; }
+
 .footer { margin-top:20px; text-align:center; font-size:11px; color:#888; }
 
 /* Responsive */
@@ -118,6 +135,7 @@ td:last-child { text-align:center; }
           <tr><td colspan="5">Memuat data...</td></tr>
         </tbody>
       </table>
+      <div class="pagination" id="pagination"></div>
     </div>
 
     <div class="footer">© 2025 Repository Karya Tulis | SMKS 1 Barunawati</div>
@@ -129,8 +147,6 @@ td:last-child { text-align:center; }
 if(!localStorage.getItem("login")){
   window.location.href="index.html";
 }
-
-// Tampilkan nama user
 document.getElementById("namaUser").textContent = localStorage.getItem("nama") || "User";
 
 // Sidebar toggle
@@ -138,16 +154,25 @@ function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("a
 function logout(){ localStorage.clear(); window.location.href="index.html"; }
 
 let allData = [];
+let currentPage = 1;
+const rowsPerPage = 10;
 
-// Render tabel
+// Render tabel per halaman
 function renderTable(data){
   const tbody = document.getElementById("dataTabel");
   tbody.innerHTML = "";
+
   if(data.length===0){
     tbody.innerHTML = "<tr><td colspan='5'>Data tidak ditemukan</td></tr>";
+    document.getElementById("pagination").innerHTML = "";
     return;
   }
-  data.forEach(row=>{
+
+  const start = (currentPage-1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const paginatedItems = data.slice(start, end);
+
+  paginatedItems.forEach(row=>{
     let link = row.link;
     if(link.includes("drive.google.com")){
       const id = link.split("/d/")[1]?.split("/")[0];
@@ -162,42 +187,61 @@ function renderTable(data){
         <td style="text-align:center"><a href="${link}" target="_blank"><i class="fa-solid fa-download"></i></a></td>
       </tr>`;
   });
+
+  renderPagination(data.length);
 }
+
+// Render pagination
+function renderPagination(totalItems){
+  const pageCount = Math.ceil(totalItems/rowsPerPage);
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = "";
+
+  if(pageCount <= 1) return;
+
+  for(let i=1; i<=pageCount; i++){
+    const btn = document.createElement("button");
+    btn.textContent = i;
+    if(i === currentPage) btn.classList.add("active");
+    btn.addEventListener("click", ()=>{
+      currentPage = i;
+      renderTable(filteredData());
+    });
+    pagination.appendChild(btn);
+  }
+}
+
+// Filter data
+function filteredData(){
+  const jurusan = document.getElementById("filterJurusan").value;
+  const tahun = document.getElementById("filterTahun").value;
+  let filtered = allData;
+  if(jurusan) filtered = filtered.filter(r => r.jurusan === jurusan);
+  if(tahun) filtered = filtered.filter(r => r.tahun === tahun);
+  return filtered;
+}
+
+document.getElementById("filterJurusan").addEventListener("change", ()=>{
+  currentPage=1;
+  renderTable(filteredData());
+});
+document.getElementById("filterTahun").addEventListener("change", ()=>{
+  currentPage=1;
+  renderTable(filteredData());
+});
 
 // Populate filter
 function populateFilters(data){
   const jurusanSet = new Set();
   const tahunSet = new Set();
   data.forEach(r => { jurusanSet.add(r.jurusan); tahunSet.add(r.tahun); });
-  
   const jurusanSelect = document.getElementById("filterJurusan");
   const tahunSelect = document.getElementById("filterTahun");
-  
-  jurusanSet.forEach(j => {
-    const o = document.createElement("option");
-    o.value = j; o.text = j;
-    jurusanSelect.appendChild(o);
-  });
-  tahunSet.forEach(t => {
-    const o = document.createElement("option");
-    o.value = t; o.text = t;
-    tahunSelect.appendChild(o);
-  });
+  jurusanSet.forEach(j => { const o = document.createElement("option"); o.value=j; o.text=j; jurusanSelect.appendChild(o); });
+  tahunSet.forEach(t => { const o = document.createElement("option"); o.value=t; o.text=t; tahunSelect.appendChild(o); });
 }
 
-// Filter event
-document.getElementById("filterJurusan").addEventListener("change", applyFilter);
-document.getElementById("filterTahun").addEventListener("change", applyFilter);
-function applyFilter(){
-  const jurusan = document.getElementById("filterJurusan").value;
-  const tahun = document.getElementById("filterTahun").value;
-  let filtered = allData;
-  if(jurusan) filtered = filtered.filter(r => r.jurusan === jurusan);
-  if(tahun) filtered = filtered.filter(r => r.tahun === tahun);
-  renderTable(filtered);
-}
-
-// Fetch data dari Apps Script (ganti dengan URL publik Anda)
+// Fetch data
 const scriptURL = "https://script.google.com/macros/s/AKfycbwhQOV4axjkdQF4tJAFpvzQ4kUpLNoHEIYR2b5pXy8WJsTHGK8jOlRkQcACpBmxylTY/exec";
 
 fetch(scriptURL)
