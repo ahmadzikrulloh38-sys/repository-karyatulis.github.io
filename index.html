@@ -9,13 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    /* Palet Modern */
     :root {
-      --primary: #4B6CB7;   /* Biru Indigo */
-      --secondary: #FFFFFF; /* Putih */
-      --text: #2C2C2C;      /* Abu Gelap */
-      --accent: #00BFFF;    /* Biru Cerah */
-      --shadow: #E0E0E0;    /* Shadow lembut */
+      --primary: #4B6CB7;
+      --secondary: #FFFFFF;
+      --text: #2C2C2C;
+      --accent: #00BFFF;
+      --shadow: #E0E0E0;
     }
 
     * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin:0; padding:0; }
@@ -41,10 +40,16 @@
       align-items: center;
     }
 
-   
+    /* Logo proporsional */
+    .logo {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      margin-bottom: 15px;
+    }
 
     @media (max-width: 400px) {
-      .logo { width: 40px; height: 40px; }
+      .logo { width: 80px; height: 80px; margin-bottom: 12px; }
     }
 
     h2 {
@@ -83,7 +88,6 @@
       box-shadow: 0 0 8px rgba(75,108,183,0.3);
     }
 
-    /* Tombol utama modern */
     .btn-login {
       width: 100%;
       padding: 12px;
@@ -125,7 +129,7 @@
 <body>
 
 <div class="login-container">
-  <!-- Logo -->
+  <!-- Logo Proporsional -->
   <img src="logo_smk.jpg" alt="Logo SMKS 1 Barunawati" class="logo">
 
   <h2>REPOSITORY KARYA TULIS</h2>
