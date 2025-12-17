@@ -99,10 +99,14 @@ td:last-child { text-align:center; }
     <h3>Daftar Karya Tulis Siswa</h3>
 
     <div class="filter-container">
-      <div><label for="filterJurusan">Jurusan:</label>
-      <select id="filterJurusan"><option value="">Semua Jurusan</option></select></div>
-      <div><label for="filterTahun">Tahun:</label>
-      <select id="filterTahun"><option value="">Semua Tahun</option></select></div>
+      <div>
+        <label for="filterJurusan">Jurusan:</label>
+        <select id="filterJurusan"><option value="">Semua Jurusan</option></select>
+      </div>
+      <div>
+        <label for="filterTahun">Tahun:</label>
+        <select id="filterTahun"><option value="">Semua Tahun</option></select>
+      </div>
     </div>
 
     <div class="table-container">
@@ -110,7 +114,9 @@ td:last-child { text-align:center; }
         <thead>
           <tr><th>Judul</th><th>Nama</th><th>Jurusan</th><th>Tahun</th><th>Download</th></tr>
         </thead>
-        <tbody id="dataTabel"><tr><td colspan="5">Memuat data...</td></tr></tbody>
+        <tbody id="dataTabel">
+          <tr><td colspan="5">Memuat data...</td></tr>
+        </tbody>
       </table>
     </div>
 
@@ -118,7 +124,14 @@ td:last-child { text-align:center; }
   </main>
 </div>
 
+<script>
+// Cek login
+if(!localStorage.getItem("login")){
+  window.location.href="index.html";
+}
 
+// Tampilkan nama user
+document.getElementById("namaUser").textContent = localStorage.getItem("nama") || "User";
 
 // Sidebar toggle
 function toggleSidebar(){ document.getElementById("sidebar").classList.toggle("active"); }
@@ -126,17 +139,21 @@ function logout(){ localStorage.clear(); window.location.href="index.html"; }
 
 let allData = [];
 
+// Render tabel
 function renderTable(data){
   const tbody = document.getElementById("dataTabel");
   tbody.innerHTML = "";
-  if(data.length===0){ tbody.innerHTML="<tr><td colspan='5'>Data tidak ditemukan</td></tr>"; return; }
+  if(data.length===0){
+    tbody.innerHTML = "<tr><td colspan='5'>Data tidak ditemukan</td></tr>";
+    return;
+  }
   data.forEach(row=>{
-    let link=row.link;
+    let link = row.link;
     if(link.includes("drive.google.com")){
-      const id=link.split("/d/")[1]?.split("/")[0];
-      if(id) link=`https://drive.google.com/uc?id=${id}&export=download`;
+      const id = link.split("/d/")[1]?.split("/")[0];
+      if(id) link = `https://drive.google.com/uc?id=${id}&export=download`;
     }
-    tbody.innerHTML+=`
+    tbody.innerHTML += `
       <tr>
         <td>${row.judul}</td>
         <td>${row.nama}</td>
@@ -147,37 +164,54 @@ function renderTable(data){
   });
 }
 
+// Populate filter
 function populateFilters(data){
-  const jurusanSet=new Set();
-  const tahunSet=new Set();
-  data.forEach(r=>{ jurusanSet.add(r.jurusan); tahunSet.add(r.tahun); });
-  const jurusanSelect=document.getElementById("filterJurusan");
-  const tahunSelect=document.getElementById("filterTahun");
-  jurusanSet.forEach(j=>{ const o=document.createElement("option"); o.value=j; o.text=j; jurusanSelect.appendChild(o); });
-  tahunSet.forEach(t=>{ const o=document.createElement("option"); o.value=t; o.text=t; tahunSelect.appendChild(o); });
+  const jurusanSet = new Set();
+  const tahunSet = new Set();
+  data.forEach(r => { jurusanSet.add(r.jurusan); tahunSet.add(r.tahun); });
+  
+  const jurusanSelect = document.getElementById("filterJurusan");
+  const tahunSelect = document.getElementById("filterTahun");
+  
+  jurusanSet.forEach(j => {
+    const o = document.createElement("option");
+    o.value = j; o.text = j;
+    jurusanSelect.appendChild(o);
+  });
+  tahunSet.forEach(t => {
+    const o = document.createElement("option");
+    o.value = t; o.text = t;
+    tahunSelect.appendChild(o);
+  });
 }
 
+// Filter event
 document.getElementById("filterJurusan").addEventListener("change", applyFilter);
 document.getElementById("filterTahun").addEventListener("change", applyFilter);
 function applyFilter(){
-  const jurusan=document.getElementById("filterJurusan").value;
-  const tahun=document.getElementById("filterTahun").value;
-  let filtered=allData;
-  if(jurusan) filtered=filtered.filter(r=>r.jurusan===jurusan);
-  if(tahun) filtered=filtered.filter(r=>r.tahun===tahun);
+  const jurusan = document.getElementById("filterJurusan").value;
+  const tahun = document.getElementById("filterTahun").value;
+  let filtered = allData;
+  if(jurusan) filtered = filtered.filter(r => r.jurusan === jurusan);
+  if(tahun) filtered = filtered.filter(r => r.tahun === tahun);
   renderTable(filtered);
 }
 
-// Fetch data
-fetch("https://script.google.com/macros/s/AKfycbwhQOV4axjkdQF4tJAFpvzQ4kUpLNoHEIYR2b5pXy8WJsTHGK8jOlRkQcACpBmxylTY/exec")
-.then(res=>res.json())
-.then(data=>{
-  allData=data;
+// Fetch data dari Apps Script (ganti dengan URL publik Anda)
+const scriptURL = "https://script.google.com/macros/s/AKfycbwhQOV4axjkdQF4tJAFpvzQ4kUpLNoHEIYR2b5pXy8WJsTHGK8jOlRkQcACpBmxylTY/exec";
+
+fetch(scriptURL)
+.then(res => res.json())
+.then(data => {
+  allData = data;
   populateFilters(allData);
   renderTable(allData);
 })
-.catch(err=>{ console.error(err); document.getElementById("dataTabel").innerHTML="<tr><td colspan='5'>Gagal memuat data</td></tr>"; });
-
+.catch(err => {
+  console.error(err);
+  document.getElementById("dataTabel").innerHTML = "<tr><td colspan='5'>Gagal memuat data</td></tr>";
+});
 </script>
+
 </body>
 </html>
