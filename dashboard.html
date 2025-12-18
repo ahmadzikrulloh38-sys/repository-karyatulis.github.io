@@ -17,8 +17,6 @@
   --text:#1f2937;
   --muted:#6b7280;
   --border:#e5e7eb;
-  --success:#22c55e;
-  --warning:#facc15;
   --shadow:0 12px 30px rgba(0,0,0,.06);
   --radius:16px;
 }
@@ -26,7 +24,6 @@
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
 body{background:var(--bg);color:var(--text)}
 
-/* ===== Layout ===== */
 .layout{
   display:grid;
   grid-template-columns:260px 1fr;
@@ -36,25 +33,28 @@ body{background:var(--bg);color:var(--text)}
 /* ===== Sidebar ===== */
 .sidebar{
   background:var(--white);
-  padding:24px 18px;
+  padding:24px 16px;
   border-right:1px solid var(--border);
 }
 
-.brand{
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:28px;
+.brand-box{
+  margin-bottom:30px;
+  padding:0 10px;
 }
+
+.brand-title{font-size:18px;font-weight:700}
+.brand-sub{font-size:12px;color:var(--muted);margin-top:4px}
 
 .menu a{
   display:flex;
   align-items:center;
-  gap:14px;
-  padding:14px 16px;
+  gap:12px;
+  padding:12px 14px;
   margin-bottom:6px;
   text-decoration:none;
   color:var(--muted);
-  border-radius:14px;
+  border-radius:12px;
+  font-size:14px;
   font-weight:500;
 }
 
@@ -63,6 +63,9 @@ body{background:var(--bg);color:var(--text)}
   background:var(--primary-soft);
   color:var(--primary);
 }
+
+/* ===== Main ===== */
+.main{padding:24px 28px}
 
 /* ===== Topbar ===== */
 .topbar{
@@ -73,16 +76,7 @@ body{background:var(--bg);color:var(--text)}
 }
 
 .topbar h2{font-size:22px;font-weight:700}
-
-/* Hamburger */
-.hamburger{
-  display:none;
-  font-size:20px;
-  cursor:pointer;
-}
-
-/* ===== Main ===== */
-.main{padding:24px 28px}
+.hamburger{display:none;font-size:20px;cursor:pointer}
 
 /* ===== Search ===== */
 .search{
@@ -94,6 +88,7 @@ body{background:var(--bg);color:var(--text)}
   align-items:center;
   gap:10px;
 }
+
 .search input{
   border:none;
   outline:none;
@@ -126,7 +121,9 @@ body{background:var(--bg);color:var(--text)}
   width:46px;height:46px;
   border-radius:14px;
   background:var(--primary);
-  display:flex;align-items:center;justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   color:#fff;
 }
 
@@ -138,14 +135,10 @@ body{background:var(--bg);color:var(--text)}
   padding:22px;
 }
 
-.card-header{
-  margin-bottom:14px;
-}
+.card-header{margin-bottom:14px}
 .card-header h3{font-size:18px;font-weight:600}
 
-.table-wrapper{
-  overflow-x:auto;
-}
+.table-wrapper{overflow-x:auto}
 
 table{
   width:100%;
@@ -170,9 +163,18 @@ tr:hover{background:#fafafa}
   font-weight:600;
 }
 .published{background:#dcfce7;color:#166534}
-.review{background:#fef3c7;color:#92400e}
 
-/* ===== MOBILE ===== */
+/* ===== Overlay ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:999;
+  display:none;
+}
+.overlay.active{display:block}
+
+/* ===== Mobile ===== */
 @media(max-width:900px){
   .layout{grid-template-columns:1fr}
   .sidebar{
@@ -186,29 +188,38 @@ tr:hover{background:#fafafa}
   }
   .sidebar.active{left:0}
   .hamburger{display:block}
-  .topbar{gap:10px}
 }
 
 @media(max-width:600px){
   .topbar{flex-direction:column;align-items:flex-start;gap:12px}
   .search input{width:100%}
+
+  /* 🔥 STAT MOBILE FIX (3 TUMPUK) */
+  .stats{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
 
 <body>
 
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
 <div class="layout">
 
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
-    <div class="brand">📘 Repository</div>
-    <div class="brand">SMKS 1 BARUNAWATI</div>
+    <div class="brand-box">
+      <div class="brand-title">📘 Repository</div>
+      <div class="brand-sub">SMKS 1 Barunawati</div>
+    </div>
+
     <nav class="menu">
-      <a class="active" href="dashboard.html"><i class="fa-solid fa-grid"></i> Dashboard</a>
-      <a href="data-karyatulis.html"><i class="fa-solid fa-book"></i> Data Karya Tulis</a>
-      <a href="upload-karyatulis.html"><i class="fa-solid fa-upload"></i> Upload Karya Tulis</a>
-      <a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      <a class="active" href="dashboard.html"><i class="fa-solid fa-grid"></i>Dashboard</a>
+      <a href="data-karyatulis.html"><i class="fa-solid fa-book"></i>Data Karya Tulis</a>
+      <a href="upload-karyatulis.html"><i class="fa-solid fa-upload"></i>Upload Karya Tulis</a>
+      <a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
     </nav>
   </aside>
 
@@ -217,30 +228,30 @@ tr:hover{background:#fafafa}
 
     <div class="topbar">
       <h2>Hello, <span id="namaUser"></span> 👋</h2>
-      <div class="hamburger" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
+      <div class="hamburger" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+      </div>
       <div class="search">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" placeholder="Search..." />
+        <input type="text" placeholder="Search...">
       </div>
     </div>
 
-    <!-- Stats -->
     <section class="stats">
       <div class="stat">
         <div><h4>Total Karya Tulis</h4><p id="totalKarya">0</p></div>
         <div class="icon"><i class="fa-solid fa-file-lines"></i></div>
       </div>
       <div class="stat">
-        <div><h4>Desain Komunikasi Visual</h4><p id="dkv">0</p></div>
+        <div><h4>DKV</h4><p id="dkv">0</p></div>
         <div class="icon"><i class="fa-solid fa-pen-nib"></i></div>
       </div>
       <div class="stat">
-        <div><h4>Teknik Jaringan Komputer & Telekomunikasi</h4><p id="tjkt">0</p></div>
+        <div><h4>TJKT</h4><p id="tjkt">0</p></div>
         <div class="icon"><i class="fa-solid fa-network-wired"></i></div>
       </div>
     </section>
 
-    <!-- Table -->
     <section class="card">
       <div class="card-header">
         <h3>Karya Tulis Terbaru</h3>
@@ -265,14 +276,18 @@ tr:hover{background:#fafafa}
   </main>
 </div>
 
-
 <script>
 if(!localStorage.getItem("login")) location.href="index.html";
 namaUser.textContent = localStorage.getItem("nama") || "User";
 
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+
 function toggleSidebar(){
   sidebar.classList.toggle("active");
+  overlay.classList.toggle("active");
 }
+
 function logout(){
   localStorage.clear();
   location.href="index.html";
@@ -280,15 +295,17 @@ function logout(){
 
 async function fetchData(){
   try{
-    const r=await fetch("https://script.google.com/macros/s/AKfycbxmtQAsDNVo1CaMTfYqpp5yHXfY_RpvVQggsGJHyDZDgW2cpzOoI1OCLsROmWbVNh-q/exec");
-    const d=await r.json();
+    const r = await fetch("https://script.google.com/macros/s/AKfycbxmtQAsDNVo1CaMTfYqpp5yHXfY_RpvVQggsGJHyDZDgW2cpzOoI1OCLsROmWbVNh-q/exec");
+    const d = await r.json();
 
-    totalKarya.textContent=d.length;
-    dkv.textContent=d.filter(x=>x.jurusan.toUpperCase().includes("DESAIN")).length;
-    tjkt.textContent=d.filter(x=>x.jurusan.toUpperCase().includes("JARINGAN")).length;
+    totalKarya.textContent = d.length;
+    dkv.textContent = d.filter(x=>x.jurusan.toUpperCase().includes("DESAIN")).length;
+    tjkt.textContent = d.filter(x=>x.jurusan.toUpperCase().includes("JARINGAN")).length;
 
     tabelKarya.innerHTML="";
-    d.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp)).slice(0,5).forEach(i=>{
+    d.sort((a,b)=>new Date(b.timestamp)-new Date(a.timestamp))
+     .slice(0,5)
+     .forEach(i=>{
       tabelKarya.innerHTML+=`
       <tr>
         <td>${i.judul}</td>
