@@ -1,307 +1,255 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Data Karya Tulis | Repository</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Data Karya Tulis | Repository</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Font & Icon -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-  <style>
-    :root {
-      --bg: #f6f8fc;
-      --white: #ffffff;
-      --primary: #6c63ff;
-      --primary-soft: #eef0ff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --shadow: 0 12px 30px rgba(0,0,0,.06);
-      --radius: 16px;
-    }
+<style>
+:root{
+  --bg:#f6f8fc;--white:#fff;--primary:#6c63ff;
+  --primary-soft:#eef0ff;--text:#1f2937;
+  --muted:#6b7280;--border:#e5e7eb;
+  --shadow:0 12px 30px rgba(0,0,0,.06);
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);}
 
-    * { box-sizing: border-box; margin:0; padding:0; font-family: 'Inter', sans-serif; }
+/* ===== Layout ===== */
+.layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh;}
+.main{padding:24px;}
 
-    body { background: var(--bg); color: var(--text); }
+/* ===== Sidebar ===== */
+.sidebar{
+  background:var(--white);
+  padding:24px 18px;
+  border-right:1px solid var(--border);
+}
+.brand{font-size:20px;font-weight:700;margin-bottom:28px;padding:0 12px;}
+.menu a{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 16px;margin-bottom:6px;
+  text-decoration:none;color:var(--muted);
+  border-radius:14px;font-weight:500;
+}
+.menu a.active,.menu a:hover{
+  background:var(--primary-soft);color:var(--primary);
+}
 
-    /* ===== Layout ===== */
-    .layout {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 100vh;
-    }
+/* ===== Topbar ===== */
+.topbar{
+  display:flex;align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+.topbar-left{
+  display:flex;align-items:center;gap:12px;
+}
+.burger{
+  display:none;
+  font-size:20px;
+  cursor:pointer;
+}
 
-    /* ===== Sidebar ===== */
-    .sidebar {
-      background: var(--white);
-      padding: 24px 18px;
-      border-right: 1px solid var(--border);
-    }
+/* ===== Card ===== */
+.card{
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px;
+}
+.card-header{
+  display:flex;flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.filters{
+  display:flex;gap:10px;flex-wrap:wrap;
+}
+.filters select{
+  padding:10px 14px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  font-size:14px;
+}
 
-    .brand {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 32px;
-      padding: 0 12px;
-    }
+/* ===== Table ===== */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+th{color:var(--muted);font-weight:500;padding:12px;border-bottom:1px solid var(--border);}
+td{padding:14px;border-bottom:1px solid var(--border);}
+td:last-child{text-align:center;}
+.download{color:var(--primary);font-size:16px;}
+tr:hover{background:#fafafa;}
 
-    .menu a {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      margin-bottom: 6px;
-      text-decoration: none;
-      color: var(--muted);
-      border-radius: 14px;
-      font-weight: 500;
-      transition: .2s;
-    }
+/* ===== Pagination ===== */
+.pagination{
+  margin-top:18px;
+  display:flex;justify-content:center;
+  gap:8px;flex-wrap:wrap;
+}
+.pagination button{
+  border:none;background:var(--primary-soft);
+  color:var(--primary);
+  padding:8px 14px;border-radius:10px;
+  font-weight:600;cursor:pointer;
+}
+.pagination button.active{
+  background:var(--primary);color:#fff;
+}
 
-    .menu a i { width: 18px; }
-
-    .menu a.active,
-    .menu a:hover {
-      background: var(--primary-soft);
-      color: var(--primary);
-    }
-
-    /* ===== Main ===== */
-    .main { padding: 28px 32px; }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-    }
-
-    .topbar h2 { font-size: 22px; font-weight: 700; }
-
-    /* ===== Card ===== */
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 22px;
-    }
-
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .card-header h3 {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    /* ===== Filter ===== */
-    .filters {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .filters select {
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      font-size: 14px;
-      outline: none;
-    }
-
-    .filters select:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-soft);
-    }
-
-    /* ===== Table ===== */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-      margin-top: 12px;
-    }
-
-    th {
-      text-align: left;
-      color: var(--muted);
-      font-weight: 500;
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    td {
-      padding: 14px 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    tr:hover { background: #fafafa; }
-
-    td:last-child { text-align: center; }
-
-    a.download {
-      color: var(--primary);
-      font-size: 16px;
-    }
-
-    /* ===== Pagination ===== */
-    .pagination {
-      margin-top: 16px;
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-    }
-
-    .pagination button {
-      border: none;
-      background: var(--primary-soft);
-      color: var(--primary);
-      padding: 6px 12px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .pagination button.active {
-      background: var(--primary);
-      color: #fff;
-    }
-
-    /* ===== Responsive ===== */
-    @media(max-width:900px){
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-    }
-  </style>
+/* ===== Mobile ===== */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar{
+    position:fixed;
+    left:-260px;top:0;
+    height:100%;
+    width:260px;
+    z-index:1000;
+    transition:.3s;
+  }
+  .sidebar.show{left:0;}
+  .burger{display:block;}
+  .overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.4);
+    z-index:999;
+  }
+  .overlay.show{display:block;}
+}
+</style>
 </head>
 
 <body>
 
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
 <div class="layout">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">📘 Repository SMKS 1 Barunawati</div>
-    <nav class="menu">
-      <a href="dashboard.html"><i class="fa-solid fa-grid"></i> Dashboard</a>
-      <a class="active" href="data-karyatulis.html"><i class="fa-solid fa-book"></i> Data Karya Tulis</a>
-      <a href="upload-karyatulis.html"><i class="fa-solid fa-upload"></i> Upload Karya Tulis</a>
-      <a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-    </nav>
-  </aside>
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">📘 Repository SMKS 1 Barunawati</div>
+  <nav class="menu">
+    <a href="dashboard.html"><i class="fa-solid fa-grid"></i> Dashboard</a>
+    <a class="active" href="#"><i class="fa-solid fa-book"></i> Data Karya Tulis</a>
+    <a href="upload-karyatulis.html"><i class="fa-solid fa-upload"></i> Upload</a>
+    <a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </nav>
+</aside>
 
-  <!-- Main -->
-  <main class="main">
+<!-- Main -->
+<main class="main">
 
-    <div class="topbar">
-      <h2>Data Karya Tulis</h2>
-      <div>Login sebagai: <strong id="namaUser"></strong></div>
-    </div>
+<div class="topbar">
+  <div class="topbar-left">
+    <i class="fa-solid fa-bars burger" onclick="toggleSidebar()"></i>
+    <h2>Data Karya Tulis</h2>
+  </div>
+  <div>Login: <strong id="namaUser"></strong></div>
+</div>
 
-    <section class="card">
+<section class="card">
 
-      <div class="card-header">
-        <h3>Daftar Karya Tulis Siswa</h3>
-        <div class="filters">
-          <select id="filterJurusan">
-            <option value="">Semua Jurusan</option>
-          </select>
-          <select id="filterTahun">
-            <option value="">Semua Tahun</option>
-          </select>
-        </div>
-      </div>
+<div class="card-header">
+  <h3>Daftar Karya Tulis</h3>
+  <div class="filters">
+    <select id="filterJurusan"><option value="">Semua Jurusan</option></select>
+    <select id="filterTahun"><option value="">Semua Tahun</option></select>
+  </div>
+</div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Judul</th>
-            <th>Nama</th>
-            <th>Jurusan</th>
-            <th>Tahun</th>
-            <th>Download</th>
-          </tr>
-        </thead>
-        <tbody id="dataTabel">
-          <tr><td colspan="5">Memuat data...</td></tr>
-        </tbody>
-      </table>
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Judul</th><th>Nama</th><th>Jurusan</th><th>Tahun</th><th>Download</th>
+</tr>
+</thead>
+<tbody id="dataTabel">
+<tr><td colspan="5">Memuat data...</td></tr>
+</tbody>
+</table>
+</div>
 
-      <div class="pagination" id="pagination"></div>
+<div class="pagination" id="pagination"></div>
 
-    </section>
-
-  </main>
+</section>
+</main>
 </div>
 
 <script>
-if(!localStorage.getItem("login")) window.location.href="index.html";
-document.getElementById("namaUser").textContent = localStorage.getItem("nama") || "User";
-function logout(){ localStorage.clear(); window.location.href="index.html"; }
+if(!localStorage.getItem("login"))location.href="index.html";
+namaUser.textContent=localStorage.getItem("nama")||"User";
+function logout(){localStorage.clear();location.href="index.html";}
 
-let allData=[], currentPage=1, rowsPerPage=10;
+function toggleSidebar(){
+  sidebar.classList.toggle("show");
+  overlay.classList.toggle("show");
+}
+
+let allData=[],currentPage=1,rowsPerPage=8;
 
 function filteredData(){
-  const j=document.getElementById("filterJurusan").value;
-  const t=document.getElementById("filterTahun").value;
-  return allData.filter(r=>(!j||r.jurusan===j)&&(!t||String(r.tahun)===t));
+  return allData.filter(r=>
+    (!filterJurusan.value||r.jurusan===filterJurusan.value) &&
+    (!filterTahun.value||String(r.tahun)===filterTahun.value)
+  );
 }
 
 function renderTable(data){
-  const tb=document.getElementById("dataTabel");
-  tb.innerHTML="";
-  if(!data.length){ tb.innerHTML="<tr><td colspan='5'>Data tidak ditemukan</td></tr>"; return;}
-  data.slice((currentPage-1)*rowsPerPage,currentPage*rowsPerPage).forEach(r=>{
+  dataTabel.innerHTML="";
+  if(!data.length){
+    dataTabel.innerHTML="<tr><td colspan='5'>Data tidak ditemukan</td></tr>";
+    return;
+  }
+  data.slice((currentPage-1)*rowsPerPage,currentPage*rowsPerPage)
+  .forEach(r=>{
     let link=r.link;
     if(link.includes("drive.google.com")){
       const id=link.split("/d/")[1]?.split("/")[0];
       if(id) link=`https://drive.google.com/uc?id=${id}&export=download`;
     }
-    tb.innerHTML+=`
-      <tr>
-        <td>${r.judul}</td>
-        <td>${r.nama}</td>
-        <td>${r.jurusan}</td>
-        <td>${r.tahun}</td>
-        <td><a class="download" href="${link}" target="_blank"><i class="fa-solid fa-download"></i></a></td>
-      </tr>`;
+    dataTabel.innerHTML+=`
+    <tr>
+      <td>${r.judul}</td>
+      <td>${r.nama}</td>
+      <td>${r.jurusan}</td>
+      <td>${r.tahun}</td>
+      <td><a class="download" href="${link}" target="_blank">
+      <i class="fa-solid fa-download"></i></a></td>
+    </tr>`;
   });
   renderPagination(data.length);
 }
 
 function renderPagination(total){
-  const p=document.getElementById("pagination");
-  p.innerHTML="";
+  pagination.innerHTML="";
   const pages=Math.ceil(total/rowsPerPage);
   for(let i=1;i<=pages;i++){
     const b=document.createElement("button");
     b.textContent=i;
-    if(i===currentPage) b.classList.add("active");
+    if(i===currentPage)b.classList.add("active");
     b.onclick=()=>{currentPage=i;renderTable(filteredData());};
-    p.appendChild(b);
+    pagination.appendChild(b);
   }
 }
 
-document.getElementById("filterJurusan").onchange=document.getElementById("filterTahun").onchange=()=>{
-  currentPage=1; renderTable(filteredData());
+filterJurusan.onchange=filterTahun.onchange=()=>{
+  currentPage=1;renderTable(filteredData());
 };
 
 fetch("https://script.google.com/macros/s/AKfycbwhQOV4axjkdQF4tJAFpvzQ4kUpLNoHEIYR2b5pXy8WJsTHGK8jOlRkQcACpBmxylTY/exec")
-.then(r=>r.json())
-.then(d=>{
+.then(r=>r.json()).then(d=>{
   allData=d;
-  [...new Set(d.map(x=>x.jurusan))].forEach(j=>{
-    filterJurusan.innerHTML+=`<option value="${j}">${j}</option>`;
-  });
-  [...new Set(d.map(x=>x.tahun))].forEach(t=>{
-    filterTahun.innerHTML+=`<option value="${t}">${t}</option>`;
-  });
+  [...new Set(d.map(x=>x.jurusan))].forEach(j=>filterJurusan.innerHTML+=`<option>${j}</option>`);
+  [...new Set(d.map(x=>x.tahun))].forEach(t=>filterTahun.innerHTML+=`<option>${t}</option>`);
   renderTable(allData);
 });
 </script>
